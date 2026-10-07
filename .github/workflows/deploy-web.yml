@@ -1,16 +1,15 @@
-name: 部署「计算机网络 · 时延与信道利用率」网页实时版到 GitHub Pages
+name: 部署各项目网页实时版到 GitHub Pages
+
+# 一个仓库一个站点：根是门户页（按 projects.json 生成），每个项目挂在 dist/<项目目录>/ 下。
+# 所以以后新增片子只要加目录 + 在 projects.json 里加一条，URL 就是 /network/<项目目录>/。
 
 on:
   push:
     branches: [main]
     paths:
-      - 'projects/network-delay-mv/src/**'
-      - 'projects/network-delay-mv/web/**'
-      - 'projects/network-delay-mv/public/**'
-      - 'projects/network-delay-mv/index.html'
-      - 'projects/network-delay-mv/vite.config.mts'
-      - 'projects/network-delay-mv/package.json'
-      - 'projects/network-delay-mv/package-lock.json'
+      - 'projects/**'
+      - 'projects.json'
+      - 'scripts/build-pages.mjs'
       - '.github/workflows/deploy-web.yml'
   workflow_dispatch:
 
@@ -26,9 +25,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: projects/network-delay-mv
     steps:
       - uses: actions/checkout@v7
 
@@ -36,22 +32,23 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: projects/network-delay-mv/package-lock.json
+          cache-dependency-path: projects/*/package-lock.json
 
-      - name: 安装依赖
-        run: npm ci
+      - name: 安装依赖并校验各项目（类型检查 + 数值自检）
+        run: |
+          for p in projects/*/; do
+            echo "=== $p ==="
+            (cd "$p" && npm ci && npm run check)
+          done
 
-      - name: 类型检查 + 数值自检（30 项断言）
-        run: npm run check
-
-      - name: 构建网页实时版（含 24 条旁白音频）
-        run: npm run web:build
+      - name: 构建并组装 Pages 产物（门户页 + 各项目子路径）
+        run: node scripts/build-pages.mjs
 
       - uses: actions/configure-pages@v6
 
       - uses: actions/upload-pages-artifact@v5
         with:
-          path: projects/network-delay-mv/dist
+          path: dist
 
   deploy:
     needs: build
