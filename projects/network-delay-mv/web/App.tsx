@@ -7,6 +7,11 @@ import {SHOT_RANGES, TOTAL} from '../src/timeline';
 const Q = new URLSearchParams(window.location.search);
 const UI = Q.get('ui') === '1';
 const FULL = Q.get('full') === '1';
+/** ?frame=N 深链：直接定位到第 N 帧（例如 ?frame=1560 是第 2 段、?frame=3300 是第 4 段） */
+const FRAME0 = (() => {
+  const n = Number.parseInt(Q.get('frame') ?? '0', 10);
+  return Number.isFinite(n) ? Math.max(0, Math.min(TOTAL - 1, n)) : 0;
+})();
 const TOTAL_SEC = TOTAL / 60;
 
 const fmt = (frame: number) => {
@@ -29,7 +34,7 @@ const ghostBtn: React.CSSProperties = {
 const App: React.FC = () => {
   const ref = useRef<PlayerRef>(null);
   const shellRef = useRef<HTMLDivElement>(null);
-  const [frame, setFrame] = useState(0);
+  const [frame, setFrame] = useState(FRAME0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [playing, setPlaying] = useState(false);
 
@@ -79,6 +84,7 @@ const App: React.FC = () => {
         fps={60}
         compositionWidth={1920}
         compositionHeight={1080}
+        initialFrame={FRAME0}
         controls={UI}
         loop
         clickToPlay
