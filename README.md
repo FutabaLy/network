@@ -10,7 +10,9 @@
 
 ## 在线站点
 
-一个仓库只有一个 GitHub Pages 站点，所以**根地址是门户页，各项目挂在子路径**（以后加片子不会互相占位）：
+一个仓库只有一个 GitHub Pages 站点，所以**根地址是门户页，各项目挂在子路径**（以后加片子不会互相占位）。
+
+**URL 规则（固定约定）**：`https://futabaly.github.io/network/<项目目录>/` —— 由 `projects.json` 决定，加项目不用改构建脚本或工作流；门户页固定在根地址。
 
 | 地址 | 内容 |
 |---|---|
@@ -27,21 +29,25 @@ projects/<项目名>/        每个项目自成一体
   docs/                   说明、验证文档、成片抽帧
   <成片>.mp4              成品直接放项目根目录，方便点开就看
   README.md               怎么跑、怎么导出、验证结果
-.github/workflows/        CI：对每个项目跑类型检查 + 数值自检
+projects.json             ★ 门户页与线上地址的唯一数据源（加项目 = 加一条）
+scripts/build-pages.mjs   构建各项目 + 组装 Pages 产物（门户页 + 子路径）
+docs/portal.png           门户页截图（放在 README 里）
+.github/workflows/        check.yml（校验各项目）+ deploy-web.yml（构建并发布 Pages）
 ```
 
 ## 加一个新项目
 
 1. `mkdir -p projects/<名字>`，把工程放进去（照着 `network-delay-mv` 的结构来）；
-2. 项目里至少要有 `README.md`（运行/导出说明）和 `npm run check`（类型检查 + 数值自检）；
+2. 项目里至少要有 `README.md`（运行/导出说明）和 `npm run check`（类型检查 + 数值自检）；Vite 的 `base` 保持 `'./'`（相对路径），这样搬到子路径不用改代码；
 3. 在上面的**项目索引**表里加一行；
-4. 在 `projects.json` 里加一条（门户页的卡片就出来了，URL 即 `/network/<项目目录>/`）；
-5. 把项目名加进 `.github/workflows/check.yml` 的 `matrix.project` 列表（一处）；
-5. 成品（视频/图/文档）放项目根目录或 `docs/`；`node_modules/`、`out/`、`dist/` 这些中间产物别提交 —— 各项目的 `.gitignore` 已经写好了。
+4. 在 `projects.json` 里加一条 —— **门户页卡片和线上地址都由它生成**，URL 固定为 `https://futabaly.github.io/network/<项目目录>/`；不用动 `scripts/build-pages.mjs`，也不用改工作流；
+5. 把项目名加进 `.github/workflows/check.yml` 的 `matrix.project` 列表（一处，用于跑校验）；
+6. 成品（视频/图/文档）放项目根目录或 `docs/`；`node_modules/`、`out/`、`dist/` 这些中间产物别提交 —— 各项目的 `.gitignore` 已经写好了。
 
 ## 跨项目约定（复用同一套做法）
 
 - **视频类项目用 Remotion**：React 写动画、逐帧渲染；同一套代码既能出 MP4，也能用 `@remotion/player` 在浏览器实时播（`npm run web:dev`）。
+- **站点结构固定为「门户 + 子路径」**：一个仓库只有一个 Pages 站点 —— 根地址是门户页，每个项目一个子路径 `/<仓库名>/<项目目录>/`，全部由 `projects.json` 生成，新项目天然不会和旧项目抢地址。
 - **单一参数源**：画面里出现的每个数字（公式、时间轴、动画位置、结论卡）都从一个参数文件算出来，结构上排除「公式与动画互相矛盾」。
 - **中文旁白用 edge-tts**（`zh-CN-XiaoxiaoNeural`，语速可调）逐条合成并 ffprobe 实测时长；**字幕与画面字幕层同源**，再导出 `.srt`。
 - **交付四件套**：成片 MP4 + 可编辑源码（含运行/导出说明）+ 中文旁白稿与字幕 + 验证说明。
