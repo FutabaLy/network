@@ -79,7 +79,10 @@ const App: React.FC = () => {
       <Player
         ref={ref}
         component={Main}
-        inputProps={{}}
+        // 旁白音频必须显式给前缀：Player 里的 staticFile() 会解析成域名根路径，
+        // 而站点可能部署在子路径（/network/network-delay-mv/）下，那样会 404 没声音。
+        // BASE_URL 是 Vite 的 base（'./'），所以这里得到 './narration/'，相对当前页面 → 任何路径都对。
+        inputProps={{narrationBase: `${import.meta.env.BASE_URL}narration/`}}
         durationInFrames={TOTAL}
         fps={60}
         compositionWidth={1920}
