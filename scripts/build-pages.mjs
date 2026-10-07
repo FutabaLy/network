@@ -103,7 +103,7 @@ const html = `<!doctype html>
     <div class="grid">${cards}
     </div>
     <footer>
-      源码在 <a class="plain" href="https://github.com/FutabaLy/network">github.com/FutabaLy/network</a>；
+      源码在 <a class="plain" href="${esc(cfg.repo ?? '')}">${esc((cfg.repo ?? '').replace('https://', ''))}</a>；
       每个项目都自带 README（怎么跑、怎么导出、验证结果）。
     </footer>
   </div>

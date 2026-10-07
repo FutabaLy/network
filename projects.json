@@ -1,6 +1,7 @@
 {
   "siteTitle": "network",
   "siteDesc": "计算机网络教学 / 可视化项目合集。每个项目都是浏览器实时逐帧渲染（Remotion Player），不是播视频文件。",
+  "repo": "https://github.com/FutabaLy/network",
   "projects": [
     {
       "dir": "network-delay-mv",

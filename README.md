@@ -50,3 +50,4 @@ projects/<项目名>/        每个项目自成一体
 ## CI
 
 `.github/workflows/check.yml` 对索引里的每个项目跑 `npm ci && npm run check`（类型检查 + 数值自检）与 `npm run web:build`，push / PR 都会触发。
+- `.github/workflows/deploy-web.yml`：改动 `projects/**` 或 `projects.json` 时，自动校验所有项目 → 逐个构建 → 组装门户页 + 子路径 → 发布到 GitHub Pages（**https://futabaly.github.io/network/**）。
