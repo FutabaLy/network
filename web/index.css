@@ -1,0 +1,19 @@
+html,
+body,
+#root {
+  color: #eef3ff;
+  background: #05080f;
+  min-height: 100%;
+  margin: 0;
+  font-family: 'Noto Sans SC', 'PingFang SC', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+code {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  background: #0c1424;
+  border: 1px solid #1e2b45;
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 12px;
+}

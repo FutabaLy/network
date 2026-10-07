@@ -1,0 +1,39 @@
+{
+  "name": "network-delay-mv",
+  "version": "1.0.0",
+  "private": true,
+  "description": "计算机网络教学动画：带宽 / 发送时延 / 传播时延 / 时延带宽积 / 滑动窗口与信道利用率",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render NetDelay out/network-delay.mp4",
+    "still": "remotion still NetDelay out/still.png",
+    "web:dev": "vite",
+    "web:build": "vite build",
+    "web:preview": "vite preview --port 4173",
+    "typecheck": "tsc --noEmit",
+    "check:sim": "node scripts/check_sim.mjs",
+    "check": "npm run typecheck && npm run check:sim",
+    "narration": "python audio/make_narration.py && node scripts/sync_narration.mjs",
+    "narration:tts": "python audio/make_narration.py",
+    "subs": "node scripts/make_srt.mjs",
+    "verify": "node scripts/verify_mp4.mjs"
+  },
+  "dependencies": {
+    "@remotion/player": "^4.0.529",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.529"
+  },
+  "devDependencies": {
+    "@remotion/cli": "^4.0.529",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "esbuild": "^0.28.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.1"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true
+  }
+}
