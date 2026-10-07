@@ -1,0 +1,11 @@
+node_modules/
+dist/
+
+# 渲染中间产物（最终成片会单独复制到仓库根目录 network-delay.mp4）
+out/
+.render-tmp/
+*.log
+
+# python 缓存
+__pycache__/
+*.pyc

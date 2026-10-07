@@ -1,10 +1,12 @@
-# 统一换行符，避免 Windows/macOS 之间来回改行尾
+# 统一换行符，避免 Windows / macOS 之间来回改行尾
 * text=auto eol=lf
 
-# 二进制资源不要做文本转换
+# 二进制资源不做文本转换
 *.png binary
 *.jpg binary
+*.jpeg binary
 *.mp3 binary
 *.wav binary
+*.mp4 binary
 *.ttf binary
 *.otf binary

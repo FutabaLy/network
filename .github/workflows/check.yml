@@ -1,0 +1,37 @@
+name: 校验各项目
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 加了新项目就往这里加一行（见根 README「加一个新项目」）
+        project:
+          - network-delay-mv
+    defaults:
+      run:
+        working-directory: projects/${{ matrix.project }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: projects/${{ matrix.project }}/package-lock.json
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 类型检查 + 数值自检
+        run: npm run check
+
+      - name: 构建网页实时版
+        run: npm run web:build

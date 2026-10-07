@@ -1,11 +1,4 @@
-node_modules/
-dist/
-
-# 渲染中间产物（最终成片会单独复制到仓库根目录 network-delay.mp4）
-out/
-.render-tmp/
+# 各项目自己的 .gitignore 负责各自的忽略规则，这里是仓库级的兜底
+.DS_Store
+Thumbs.db
 *.log
-
-# python 缓存
-__pycache__/
-*.pyc
