@@ -4,9 +4,9 @@
 
 ## 项目索引
 
-| 项目 | 内容 | 产物 | 怎么跑 |
+| 项目 | 内容 | 产物 | 怎么看 / 怎么跑 |
 |---|---|---|---|
-| [network-delay-mv](projects/network-delay-mv/) | **90 秒中文教学片**：带宽 / 发送时延 / 传播时延 / 时延带宽积 / 停止等待 / 滑动窗口与信道利用率。Remotion 逐帧渲染，1920×1080@60fps，含中文旁白与字幕（24 条） | [`network-delay.mp4`](projects/network-delay-mv/network-delay.mp4)（90.005 s / 11.1 MB） | `cd projects/network-delay-mv && npm i && npm run narration && npm run render` |
+| [network-delay-mv](projects/network-delay-mv/) | **90 秒中文教学片**：带宽 / 发送时延 / 传播时延 / 时延带宽积 / 停止等待 / 滑动窗口与信道利用率。Remotion 逐帧渲染，1920×1080@60fps，含中文旁白与字幕（24 条） | [`network-delay.mp4`](projects/network-delay-mv/network-delay.mp4)（90.005 s / 11.1 MB）、网页实时版 **https://futabaly.github.io/network/** | `cd projects/network-delay-mv && npm i && npm run narration && npm run render` |
 
 ## 目录约定
 

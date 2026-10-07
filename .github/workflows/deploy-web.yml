@@ -1,0 +1,64 @@
+name: 部署「计算机网络 · 时延与信道利用率」网页实时版到 GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'projects/network-delay-mv/src/**'
+      - 'projects/network-delay-mv/web/**'
+      - 'projects/network-delay-mv/public/**'
+      - 'projects/network-delay-mv/index.html'
+      - 'projects/network-delay-mv/vite.config.mts'
+      - 'projects/network-delay-mv/package.json'
+      - 'projects/network-delay-mv/package-lock.json'
+      - '.github/workflows/deploy-web.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: projects/network-delay-mv
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: projects/network-delay-mv/package-lock.json
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 类型检查 + 数值自检（30 项断言）
+        run: npm run check
+
+      - name: 构建网页实时版（含 24 条旁白音频）
+        run: npm run web:build
+
+      - uses: actions/configure-pages@v6
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: projects/network-delay-mv/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
